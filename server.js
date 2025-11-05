@@ -34,7 +34,7 @@ app.use(cookieParser());
 // OR: Allow dynamic origin based on request
 app.use(
   cors({
-    origin: "https://ex-libris-fe.vercel.app/",
+    origin: "https://ex-libris-fe.vercel.app",
     credentials: true,
   })
 );
