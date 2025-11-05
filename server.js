@@ -34,7 +34,7 @@ app.use(cookieParser());
 // OR: Allow dynamic origin based on request
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://ex-libris-9fzobwsr6-himanshus-projects-51986d98.vercel.app",
     credentials: true,
   })
 );
