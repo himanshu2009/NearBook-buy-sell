@@ -34,7 +34,7 @@ app.use(cookieParser());
 // OR: Allow dynamic origin based on request
 app.use(
   cors({
-    origin: "https://ex-libris-9fzobwsr6-himanshus-projects-51986d98.vercel.app",
+    origin: "https://ex-libris-fe.vercel.app/",
     credentials: true,
   })
 );
