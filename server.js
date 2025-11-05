@@ -81,7 +81,7 @@ app.get("/", (req, res) => {
 
 
 
-mongoose.connect("mongodb://localhost:27017/Ex-Libris")
+mongoose.connect(process.env.MONGODB_URL)
 .then(() => console.log("✅ MongoDB connected"))
 .catch((err) => console.error("❌ Connection error:", err));
 
