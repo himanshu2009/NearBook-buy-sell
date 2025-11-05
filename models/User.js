@@ -21,11 +21,7 @@ const userSchema = new mongoose.Schema(
     address: {
       type: String,
     },
-     additionalDetails: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-      ref: "Profile",
-    },
+   
     avatarUrl: {
       type: String, // user profile image
     },

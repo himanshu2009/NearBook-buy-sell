@@ -1,13 +1,8 @@
     const bcrypt = require("bcrypt")
 const User = require("../models/User")
 const OTP = require("../models/OTP")
-const jwt = require("jsonwebtoken")
-const otpGenerator = require("otp-generator")
-const mailSender = require("../utils/mailSender")
-const { passwordUpdated } = require("../mail/templates/passwordUpdate")
-const Profile = require("../models/Profile")
-require("dotenv").config()
-
+const otpGenerator = require('otp-generator')
+const jwt=require("jsonwebtoken")
 // Signup Controller for Registering USers
 
 exports.signup = async (req, res) => {
@@ -22,6 +17,7 @@ exports.signup = async (req, res) => {
 
     // Check if All Details are there or not
     if (
+      
      !contactNumber||
       !email ||
       !password ||
@@ -70,13 +66,7 @@ exports.signup = async (req, res) => {
     approved === "Instructor" ? (approved = false) : (approved = true)
 
     // Create the Additional Profile For User
-    const profileDetails = await Profile.create({
-      name:null,
-      gender: null,
-      dateOfBirth: null,
-      about: null,
    
-    })
     const user = await User.create({
      
       email,
@@ -105,6 +95,8 @@ exports.login = async (req, res) => {
     // Get email and password from request body
     const { email, password } = req.body
 
+    console.log("login happening")
+
     // Check if email or password is missing
     if (!email || !password) {
       // Return 400 Bad Request status code with error message
@@ -115,7 +107,7 @@ exports.login = async (req, res) => {
     }
 
     // Find user with provided email
-    const user = await User.findOne({ email }).populate("additionalDetails")
+    const user = await User.findOne({ email })
 
     // If user not found with provided email
     if (!user) {
@@ -125,6 +117,8 @@ exports.login = async (req, res) => {
         message: `User is not Registered with Us Please SignUp to Continue`,
       })
     }
+
+    console.log("user",user)
 
     // Generate JWT token and Compare Password
     if (await bcrypt.compare(password, user.password)) {
@@ -285,5 +279,20 @@ exports.changePassword = async (req, res) => {
       message: "Error occurred while updating password",
       error: error.message,
     })
+  }
+}
+
+// Logout controller - clears auth cookie
+exports.logout = async (req, res) => {
+  try {
+    const cookieOptions = {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: false,
+    }
+    res.clearCookie("token", cookieOptions)
+    return res.status(200).json({ success: true, message: "Logged out successfully" })
+  } catch (error) {
+    return res.status(500).json({ success: false, message: "Logout failed", error: error.message })
   }
 }

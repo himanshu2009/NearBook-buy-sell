@@ -8,11 +8,17 @@ dotenv.config();
 // This function is used as middleware to authenticate user requests
 exports.auth = async (req, res, next) => {
 	try {
-		// Extracting JWT from request cookies, body or header
-		const token =
-			req.cookies.token ||
-			req.body.token ||
-			req.header("Authorization").replace("Bearer ", "");
+    	// Extracting JWT from request cookies, body or header (safely)
+
+    	console.log("In auth")
+    	const authHeader = req.get("Authorization") || req.headers?.authorization
+    	const bearerToken = authHeader && authHeader.startsWith("Bearer ")
+    	    ? authHeader.slice(7)
+    	    : authHeader
+    	const token =
+    			(req.cookies && req.cookies.token) ||
+    			req.body?.token ||
+    			bearerToken
 
 		// If JWT is missing, return 401 Unauthorized response
 		if (!token) {
@@ -36,6 +42,7 @@ exports.auth = async (req, res, next) => {
 		next();
 	} catch (error) {
 		// If there is an error during the authentication process, return 401 Unauthorized response
+		console.log("error message",error.message)
 		return res.status(401).json({
 			success: false,
 			message: `Something Went Wrong While Validating the Token`,

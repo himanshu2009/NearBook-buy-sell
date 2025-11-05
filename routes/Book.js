@@ -1,6 +1,6 @@
 // Import the required modules
 const express = require("express")
-const { addBook, getMyBooks } = require("../controllers/book")
+const { addBook, getMyBooks, getAllBooks } = require("../controllers/book")
 const { auth } = require("../middlewares/auth")
 
 const router = express.Router()
@@ -9,6 +9,7 @@ const router = express.Router()
 
 router.post("/books", auth ,addBook)
 router.get("/mybooks", auth, getMyBooks);
+router.get("/books", auth, getAllBooks);
 
 
 

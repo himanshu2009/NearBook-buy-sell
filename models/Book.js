@@ -10,7 +10,7 @@ const bookSchema = new mongoose.Schema({
     required: true,
   },
   coverImageUrl: { type: String, required: true },
-  userId: { type: String, required: true, ref: "User" },
+  userId: {    type: mongoose.Schema.Types.ObjectId, required: true, ref: "User" },
   createdAt: { type: Date, default: Date.now },
 });
 
